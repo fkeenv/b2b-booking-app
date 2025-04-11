@@ -11,7 +11,8 @@
     "require": {
         "php": "^8.2",
         "laravel/framework": "^12.0",
-        "laravel/tinker": "^2.10.1"
+        "laravel/tinker": "^2.10.1",
+        "nativephp/electron": "^1.0"
     },
     "require-dev": {
         "fakerphp/faker": "^1.23",
@@ -50,7 +51,11 @@
             "@php -r \"file_exists('database/database.sqlite') || touch('database/database.sqlite');\"",
             "@php artisan migrate --graceful --ansi"
         ],
-        "dev": "npx concurrently -c \"#93c5fd,#c4b5fd,#fdba74\" \"php artisan serve\" \"php artisan queue:listen --tries=1\" \"npm run dev\" --names='server,queue,vite'"
+        "dev": "npx concurrently -c \"#93c5fd,#c4b5fd,#fdba74\" \"php artisan serve\" \"php artisan queue:listen --tries=1\" \"npm run dev\" --names='server,queue,vite'",
+        "native:dev": [
+            "Composer\\Config::disableProcessTimeout",
+            "npx concurrently -k -c \"#93c5fd,#c4b5fd\" \"php artisan native:serve --no-interaction\" \"npm run dev\" --names=app,vite"
+        ]
     },
     "extra": {
         "laravel": {
