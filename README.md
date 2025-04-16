@@ -36,8 +36,6 @@ This app is built specifically for:
 
 Coming soon: a full onboarding guide and developer documentation.
 
-If you're interested in becoming a beta partner or want early access, [reach out here](mailto:info@yourapp.com).
-
 ---
 
 ## License
