@@ -17,7 +17,10 @@ class AccommodationFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'name' => $this->faker->name(),
+            'website' => $this->faker->url(),
+            'email' => $this->faker->unique()->safeEmail(),
+            'contact' => $this->faker->phoneNumber(),
         ];
     }
 }
