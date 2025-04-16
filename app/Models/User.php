@@ -8,6 +8,7 @@ use Filament\Panel;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Hash;
 
 class User extends Authenticatable implements FilamentUser
 {
@@ -44,12 +45,12 @@ class User extends Authenticatable implements FilamentUser
     {
         return [
             'email_verified_at' => 'datetime',
-            'password' => 'hashed',
+            'password' => 'hashed'
         ];
     }
 
     public function canAccessPanel(Panel $panel): bool
     {
-        return str_starts_with($this->email, 'keenvergara');
+        return str_ends_with($this->email, '@gmail.com');
     }
 }
