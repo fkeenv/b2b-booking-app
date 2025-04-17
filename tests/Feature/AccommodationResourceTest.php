@@ -16,7 +16,6 @@ use Tests\TestCase;
 
 class AccommodationResourceTest extends TestCase
 {
-
     use RefreshDatabase, WithFaker;
 
     /**
