@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources;
 
+use App\Filament\Clusters\Management;
 use App\Filament\Resources\AccommodationResource\Pages;
 use App\Filament\Resources\AccommodationResource\RelationManagers;
 use App\Models\Accommodation;
@@ -17,8 +18,10 @@ class AccommodationResource extends Resource
 {
     protected static ?string $model = Accommodation::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-building-office-2';
     protected static ?string $recordTitleAttribute = 'name';
+    protected static ?string $navigationGroup = 'Management';
+
     protected static bool $shouldSkipAuthorization = true;
 
     public static function form(Form $form): Form
