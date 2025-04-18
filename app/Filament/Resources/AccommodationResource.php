@@ -60,7 +60,7 @@ class AccommodationResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            TransportationResource\RelationManagers\StaffsRelationManager::class,
         ];
     }
 
