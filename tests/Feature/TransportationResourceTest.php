@@ -3,6 +3,8 @@
 namespace Tests\Feature;
 
 use App\Filament\Resources\TransportationResource;
+use App\Filament\Resources\TransportationResource\Pages\EditTransportation;
+use App\Models\Staff;
 use App\Models\Transportation;
 use App\Models\User;
 use Filament\Actions\DeleteAction;
@@ -96,5 +98,22 @@ class TransportationResourceTest extends TestCase
             ->callAction(DeleteAction::class);
 
         $this->assertModelMissing($transportation);
+    }
+
+    public function test_can_render_relation_manager()
+    {
+        $transportation = Transportation::factory()->create();
+        Staff::factory()->count(10)->sequence(function () use ($transportation) {
+            return [
+                'staffable_id' => $transportation->id,
+                'staffable_type' => Transportation::class,
+            ];
+        });
+
+        Livewire::test(TransportationResource\RelationManagers\StaffsRelationManager::class, [
+            'ownerRecord' => $transportation,
+            'pageClass' => EditTransportation::class,
+        ])
+            ->assertSuccessful();
     }
 }
