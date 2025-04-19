@@ -20,7 +20,7 @@ class AccommodationResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-building-office-2';
     protected static ?string $recordTitleAttribute = 'name';
-    protected static ?string $navigationGroup = 'Management';
+    protected static ?string $navigationGroup = 'Organizations';
 
     protected static bool $shouldSkipAuthorization = true;
 

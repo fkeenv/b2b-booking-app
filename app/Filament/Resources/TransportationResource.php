@@ -15,7 +15,7 @@ class TransportationResource extends Resource
     protected static ?string $model = Transportation::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-truck';
-    protected static ?string $navigationGroup = 'Management';
+    protected static ?string $navigationGroup = 'Organizations';
 
     public static function form(Form $form): Form
     {
@@ -32,10 +32,14 @@ class TransportationResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('name'),
-                Tables\Columns\TextColumn::make('email'),
-                Tables\Columns\TextColumn::make('phone'),
-                Tables\Columns\TextColumn::make('website'),
+                Tables\Columns\TextColumn::make('name')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('email')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('phone')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('website')
+                    ->searchable(),
             ])
             ->filters([
                 //
