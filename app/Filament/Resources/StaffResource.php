@@ -14,7 +14,8 @@ class StaffResource extends Resource
 {
     protected static ?string $model = Staff::class;
 
-    protected static ?string $navigationLabel = 'Staffs';
+    protected static ?string $pluralLabel = 'staffs';
+    protected static ?string $slug = 'staffs';
     protected static ?string $navigationGroup = 'User Management';
 
     protected static ?string $navigationIcon = 'heroicon-o-user-group';
