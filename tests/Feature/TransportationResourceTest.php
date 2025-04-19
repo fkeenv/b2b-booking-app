@@ -7,7 +7,10 @@ use App\Filament\Resources\TransportationResource\Pages\EditTransportation;
 use App\Models\Staff;
 use App\Models\Transportation;
 use App\Models\User;
+use App\Models\Vehicle;
+use Filament\Actions\CreateAction;
 use Filament\Actions\DeleteAction;
+use Filament\Facades\Filament;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Livewire\Livewire;
@@ -100,7 +103,7 @@ class TransportationResourceTest extends TestCase
         $this->assertModelMissing($transportation);
     }
 
-    public function test_can_render_relation_manager()
+    public function test_can_render_staffs()
     {
         $transportation = Transportation::factory()->create();
         Staff::factory()->count(10)->sequence(function () use ($transportation) {
@@ -115,5 +118,63 @@ class TransportationResourceTest extends TestCase
             'pageClass' => EditTransportation::class,
         ])
             ->assertSuccessful();
+    }
+
+    public function test_can_add_staff_through_relation_manager()
+    {
+        $transportation = Transportation::factory()->create();
+        $data = [
+          'staffable_id' => $transportation->id,
+          'staffable_type' => Transportation::class,
+          'name' => $this->faker->name,
+          'email' => $this->faker->unique()->safeEmail,
+          'phone' => $this->faker->phoneNumber,
+        ];
+
+        Livewire::test(TransportationResource\RelationManagers\StaffsRelationManager::class, [
+            'ownerRecord' => $transportation,
+            'pageClass' => EditTransportation::class,
+        ])
+            ->callTableAction('create', data: $data);
+
+        $this->assertDatabaseHas('staffs', $data);
+    }
+
+    public function test_can_render_vehicles()
+    {
+        $transportation = Transportation::factory()->create();
+        Vehicle::factory()->count(10)->sequence(function () use ($transportation) {
+            return [
+                'transportation_id' => $transportation->id,
+            ];
+        });
+
+        Livewire::test(TransportationResource\RelationManagers\VehiclesRelationManager::class, [
+            'ownerRecord' => $transportation,
+            'pageClass' => EditTransportation::class,
+        ])
+            ->assertSuccessful();
+    }
+
+    public function test_can_add_vehicle_through_relation_manager()
+    {
+        $transportation = Transportation::factory()->create();
+
+        $data = [
+            'transportation_id' => $transportation->id,
+            'make' => 'Toyota',
+            'model' => 'Corolla',
+            'year' => '2020',
+            'color' => 'Red',
+            'license_plate' => 'XYZ1234'
+        ];
+
+        Livewire::test(TransportationResource\RelationManagers\VehiclesRelationManager::class, [
+            'ownerRecord' => $transportation,
+            'pageClass' => EditTransportation::class,
+        ])
+            ->callTableAction('create', data: $data);
+
+        $this->assertDatabaseHas('vehicles', $data);
     }
 }
