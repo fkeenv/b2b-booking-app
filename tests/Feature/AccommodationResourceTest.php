@@ -25,7 +25,9 @@ class AccommodationResourceTest extends TestCase
     {
         parent::setUp();
 
-        $this->actingAs(User::factory()->create());
+        /** @var User $user */
+        $user = User::factory()->create();
+        $this->actingAs($user);
     }
 
     public function test_can_render_page()
