@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Filament\Resources\TransportationResource\RelationManagers;
+namespace App\Filament\Resources\AccommodationResource\RelationManagers;
 
-use App\Models\Transportation;
+use App\Models\Accommodation;
 use App\Models\User;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -49,7 +49,7 @@ class StaffsRelationManager extends RelationManager
             ->headerActions([
                 Tables\Actions\CreateAction::make()
                     ->mutateFormDataUsing(function (array $data) {
-                        $data['staffable_type'] = Transportation::class;
+                        $data['staffable_type'] = Accommodation::class;
                         $data['staffable_id'] = $this->getOwnerRecord()->id;
                         return $data;
                     })

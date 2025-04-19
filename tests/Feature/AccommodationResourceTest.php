@@ -7,6 +7,7 @@ use App\Filament\Resources\AccommodationResource\Pages\CreateAccommodation;
 use App\Filament\Resources\AccommodationResource\Pages\EditAccommodation;
 use App\Filament\Resources\AccommodationResource\Pages\ListAccommodations;
 use App\Models\Accommodation;
+use App\Models\Staff;
 use App\Models\User;
 use Filament\Actions\DeleteAction;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -99,5 +100,22 @@ class AccommodationResourceTest extends TestCase
             ->callAction(DeleteAction::class);
 
         $this->assertModelMissing($accommodation);
+    }
+
+    public function test_can_render_relation_manager()
+    {
+        $accommodation = Accommodation::factory()->create();
+        Staff::factory()->count(10)->sequence(function () use ($accommodation) {
+            return [
+                'staffable_id' => $accommodation->id,
+                'staffable_type' => Accommodation::class,
+            ];
+        });
+
+        Livewire::test(AccommodationResource\RelationManagers\StaffsRelationManager::class, [
+            'ownerRecord' => $accommodation,
+            'pageClass' => EditAccommodation::class,
+        ])
+            ->assertSuccessful();
     }
 }
