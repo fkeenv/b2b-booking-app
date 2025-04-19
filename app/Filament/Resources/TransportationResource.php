@@ -54,6 +54,7 @@ class TransportationResource extends Resource
     {
         return [
             TransportationResource\RelationManagers\StaffsRelationManager::class,
+            TransportationResource\RelationManagers\VehiclesRelationManager::class,
         ];
     }
 
