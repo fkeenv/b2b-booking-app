@@ -14,7 +14,8 @@ class StaffResource extends Resource
 {
     protected static ?string $model = Staff::class;
 
-    protected static ?string $navigationLabel = 'Staffs';
+    protected static ?string $slug = 'staffs';
+    protected static ?string $pluralModelLabel = 'staffs';
     protected static ?string $navigationGroup = 'User Management';
 
     protected static ?string $navigationIcon = 'heroicon-o-user-group';
@@ -63,7 +64,7 @@ class StaffResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListStaff::route('/'),
+            'index' => Pages\ListStaffs::route('/'),
             'edit' => Pages\EditStaff::route('/{record}/edit'),
         ];
     }

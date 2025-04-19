@@ -6,7 +6,7 @@ use App\Filament\Resources\StaffResource;
 use Filament\Actions;
 use Filament\Resources\Pages\ListRecords;
 
-class ListStaff extends ListRecords
+class ListStaffs extends ListRecords
 {
     protected static string $resource = StaffResource::class;
 
