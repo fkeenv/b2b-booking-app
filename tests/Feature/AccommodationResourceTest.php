@@ -102,7 +102,7 @@ class AccommodationResourceTest extends TestCase
         $this->assertModelMissing($accommodation);
     }
 
-    public function test_can_render_relation_manager()
+    public function test_can_render_staffs_relation_manager()
     {
         $accommodation = Accommodation::factory()->create();
         Staff::factory()->count(10)->sequence(function () use ($accommodation) {
@@ -117,5 +117,25 @@ class AccommodationResourceTest extends TestCase
             'pageClass' => EditAccommodation::class,
         ])
             ->assertSuccessful();
+    }
+
+    public function test_can_add_staff_through_relation_manager()
+    {
+        $accommodation = Accommodation::factory()->create();
+        $data = [
+            'staffable_id' => $accommodation->id,
+            'staffable_type' => Accommodation::class,
+            'name' => $this->faker->name,
+            'email' => $this->faker->unique()->safeEmail,
+            'phone' => $this->faker->phoneNumber,
+        ];
+
+        Livewire::test(AccommodationResource\RelationManagers\StaffsRelationManager::class, [
+            'ownerRecord' => $accommodation,
+            'pageClass' => EditAccommodation::class,
+        ])
+            ->callTableAction('create', data: $data);
+
+        $this->assertDatabaseHas('staffs', $data);
     }
 }
