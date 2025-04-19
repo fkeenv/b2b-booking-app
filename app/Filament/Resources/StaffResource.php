@@ -4,13 +4,11 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\StaffResource\Pages;
 use App\Models\Staff;
-use App\Models\Transportation;
-use Filament\Forms;
+use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Filament\Tables\Filters\SelectFilter;
 
 class StaffResource extends Resource
 {
@@ -25,7 +23,8 @@ class StaffResource extends Resource
     {
         return $form
             ->schema([
-                //
+                TextInput::make('name'),
+                TextInput::make('phone'),
             ]);
     }
 
@@ -47,12 +46,10 @@ class StaffResource extends Resource
                 //
             ])
             ->actions([
-                //
+                Tables\Actions\EditAction::make(),
             ])
             ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
-                ]),
+                //
             ]);
     }
 
@@ -67,6 +64,7 @@ class StaffResource extends Resource
     {
         return [
             'index' => Pages\ListStaff::route('/'),
+            'edit' => Pages\EditStaff::route('/{record}/edit'),
         ];
     }
 
