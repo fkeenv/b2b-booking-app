@@ -27,10 +27,6 @@ class StaffsRelationManager extends RelationManager
                     ->email(),
                 Forms\Components\TextInput::make('phone')
                     ->nullable(),
-                Forms\Components\Hidden::make('staffable_type')
-                    ->default(function ($livewire) { return get_class($livewire->getOwnerRecord()); }),
-                Forms\Components\Hidden::make('staffable_id')
-                    ->default(function ($livewire) { return $livewire->getOwnerRecord()->id; }),
             ]);
     }
 
