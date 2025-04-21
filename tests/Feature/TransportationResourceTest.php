@@ -20,9 +20,6 @@ class TransportationResourceTest extends TestCase
 {
     use RefreshDatabase, WithFaker;
 
-    /**
-     * A basic feature test example.
-     */
     protected function setUp(): void
     {
         parent::setUp();
