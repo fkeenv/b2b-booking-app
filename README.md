@@ -34,7 +34,67 @@ This app is built specifically for:
 
 ## Getting Started
 
-Coming soon: a full onboarding guide and developer documentation.
+## 🚀 Installation Guide
+
+Follow these steps to set up the project locally:
+
+1. **Install Laravel Herd**  
+   We recommend using [Laravel Herd](https://herd.laravel.com/) for a smooth local development experience. (Docker soon...)
+
+2. **Clone the Repository**
+   ```bash
+   git clone https://github.com/your-username/your-repo-name.git
+   cd your-repo-name
+   ```
+
+3. **Install Dependencies**
+   ```bash
+   composer install
+   npm install && npm run build
+   ```
+
+4. **Configure with Laravel Herd**
+   - Add the project to Laravel Herd by linking and parking the directory:
+     ```bash
+     valet link your-app-name
+     valet park
+     valet secure your-app-name
+     ```
+   - Alternatively, use Herd’s GUI to manage sites.
+
+5. **Environment Setup**
+   - Copy `.env.example` to `.env`:
+     ```bash
+     cp .env.example .env
+     ```
+   - Update your `.env` file with the correct database and app settings.
+   - Generate the application key:
+     ```bash
+     php artisan key:generate
+     ```
+
+6. **Run Database Migrations**
+   ```bash
+   php artisan migrate
+   ```
+
+7. **Create an Admin User**
+   ```bash
+   php artisan make:filament-user
+   ```
+
+8. **Access the Admin Panel**  
+   Visit your site at:  
+   `https://{your-local-domain}/admin` (e.g., `https://your-app-name.test/admin`)
+
+---
+
+Let me know if you want me to add optional steps like seeding the database or running tests!
+
+## 🤝 Contributing
+
+We welcome contributions from the community!  
+Please read our [CONTRIBUTING.md](CONTRIBUTING.md) for step-by-step instructions and development workflow.
 
 ---
 
