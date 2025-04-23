@@ -2,11 +2,13 @@
 
 namespace Tests\Feature;
 
+use Althinect\FilamentSpatieRolesPermissions\Resources\RoleResource\Pages\ListRoles;
 use App\Filament\Resources\UserResource;
 use App\Filament\Resources\UserResource\Pages\CreateUser;
 use App\Filament\Resources\UserResource\Pages\EditUser;
 use App\Filament\Resources\UserResource\Pages\ListUsers;
 use App\Models\User;
+use Filament\Tables\Actions\AttachAction;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Livewire\Livewire;
@@ -144,5 +146,31 @@ class UserResourceTest extends TestCase
 
         $user->refresh();
         $this->assertNull($user->email_verified_at);
+    }
+
+    public function test_can_render_roles_relation_manager()
+    {
+        $user = User::factory()
+            ->has(\App\Models\Role::factory()->count(5))
+            ->create();
+
+        Livewire::test(UserResource\RelationManagers\RolesRelationManager::class, [
+            'ownerRecord' => $user,
+            'pageClass' => EditUser::class,
+        ])
+            ->assertSuccessful();
+    }
+
+    public function test_can_list_roles()
+    {
+        $user = User::factory()
+            ->has(\App\Models\Role::factory()->count(5))
+            ->create();
+
+        Livewire::test(UserResource\RelationManagers\RolesRelationManager::class, [
+            'ownerRecord' => $user,
+            'pageClass' => EditUser::class,
+        ])
+            ->assertCanSeeTableRecords($user->roles);
     }
 }

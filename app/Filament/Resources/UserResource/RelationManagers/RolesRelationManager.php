@@ -2,13 +2,12 @@
 
 namespace App\Filament\Resources\UserResource\RelationManagers;
 
-use Filament\Forms;
+use App\Models\Role;
+use Filament\Forms\Components\Select;
 use Filament\Forms\Form;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class RolesRelationManager extends RelationManager
 {
@@ -18,19 +17,13 @@ class RolesRelationManager extends RelationManager
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('name')
-                    ->required()
-                    ->maxLength(255),
-                Forms\Components\Select::make('guard_name')
-                    ->options(['web', 'api'])
-                    ->required()
+                //
             ]);
     }
 
     public function table(Table $table): Table
     {
         return $table
-            ->recordTitleAttribute('name')
             ->columns([
                 Tables\Columns\TextColumn::make('name'),
                 Tables\Columns\TextColumn::make('guard_name'),
@@ -39,16 +32,28 @@ class RolesRelationManager extends RelationManager
                 //
             ])
             ->headerActions([
-                Tables\Actions\CreateAction::make(),
+                Tables\Actions\AttachAction::make()
+                    ->using(function (array $data, RelationManager $record): void {
+                        $record->getOwnerRecord()->roles()->attach($data['role_id']);
+                    })
+                    ->form(fn (Form $form): Form => $form
+                        ->schema([
+                            Select::make('role_id')
+                                ->label('Role')
+                                ->options(function () {
+                                    $assignedRoleIds = $this->getOwnerRecord()->roles()->pluck('id');
+                                    return Role::whereNotIn('id', $assignedRoleIds)->pluck('name', 'id') ?? [];
+                                })
+                                ->multiple()
+                                ->required(),
+                        ])
+                    ),
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
+                Tables\Actions\DetachAction::make()
             ])
             ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
-                ]),
+                Tables\Actions\DetachBulkAction::make()
             ]);
     }
 }
