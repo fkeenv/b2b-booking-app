@@ -11,6 +11,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Livewire\Livewire;
 use Nette\Schema\Expect;
+use Spatie\Permission\Models\Role;
 use Tests\TestCase;
 
 class UserResourceTest extends TestCase
@@ -23,6 +24,8 @@ class UserResourceTest extends TestCase
 
         /** @var User $user */
         $user = User::factory()->create();
+        $role = Role::create(['name' => 'Super Admin']);
+        $user->assignRole($role);
         $this->actingAs($user);
     }
 
