@@ -14,6 +14,7 @@ use Filament\Facades\Filament;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Livewire\Livewire;
+use Spatie\Permission\Models\Role;
 use Tests\TestCase;
 
 class TransportationResourceTest extends TestCase
@@ -26,6 +27,8 @@ class TransportationResourceTest extends TestCase
 
         /** @var User $user */
         $user = User::factory()->create();
+        $role = Role::create(['name' => 'Super Admin']);
+        $user->assignRole($role);
         $this->actingAs($user);
     }
 
