@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Althinect\FilamentSpatieRolesPermissions\Concerns\HasSuperAdmin;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Filament\Models\Contracts\FilamentUser;
 use Filament\Panel;
@@ -14,7 +15,7 @@ use Spatie\Permission\Traits\HasRoles;
 class User extends Authenticatable implements FilamentUser, MustVerifyEmail
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
-    use HasFactory, Notifiable, HasRoles;
+    use HasFactory, Notifiable, HasRoles, HasSuperAdmin;
 
     /**
      * The attributes that are mass assignable.
