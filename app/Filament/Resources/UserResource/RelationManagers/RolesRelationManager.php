@@ -33,21 +33,7 @@ class RolesRelationManager extends RelationManager
             ])
             ->headerActions([
                 Tables\Actions\AttachAction::make()
-                    ->using(function (array $data, RelationManager $record): void {
-                        $record->getOwnerRecord()->roles()->attach($data['role_id']);
-                    })
-                    ->form(fn (Form $form): Form => $form
-                        ->schema([
-                            Select::make('role_id')
-                                ->label('Role')
-                                ->options(function () {
-                                    $assignedRoleIds = $this->getOwnerRecord()->roles()->pluck('id');
-                                    return Role::whereNotIn('id', $assignedRoleIds)->pluck('name', 'id') ?? [];
-                                })
-                                ->multiple()
-                                ->required(),
-                        ])
-                    ),
+                    ->recordTitleAttribute('roles.name')
             ])
             ->actions([
                 Tables\Actions\DetachAction::make()
