@@ -9,6 +9,8 @@ use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
+use App\Models\User;
 
 class StaffResource extends Resource
 {
@@ -51,7 +53,14 @@ class StaffResource extends Resource
             ])
             ->bulkActions([
                 //
-            ]);
+            ])
+            ->modifyQueryUsing(function (Builder $query) {
+                /** @var User $user */
+                $user = auth()->user();
+                $user->can('viewAny', Staff::class)
+                    ? $query->where('staffable_id', $user->id)
+                    : $query->where('staffable_id', $user->staff->staffable_id);
+            });
     }
 
     public static function getRelations(): array
