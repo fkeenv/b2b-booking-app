@@ -22,8 +22,6 @@ class AccommodationResource extends Resource
     protected static ?string $recordTitleAttribute = 'name';
     protected static ?string $navigationGroup = 'Organizations';
 
-    protected static bool $shouldSkipAuthorization = true;
-
     public static function form(Form $form): Form
     {
         return $form
