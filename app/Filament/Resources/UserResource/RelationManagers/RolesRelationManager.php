@@ -8,6 +8,7 @@ use Filament\Forms\Form;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
 
 class RolesRelationManager extends RelationManager
 {
@@ -34,6 +35,15 @@ class RolesRelationManager extends RelationManager
             ->headerActions([
                 Tables\Actions\AttachAction::make()
                     ->recordTitleAttribute('roles.name')
+                    ->preloadRecordSelect()
+                    ->recordSelectOptionsQuery(function (Builder $query) {
+                        return Role::query()
+                            ->where('guard_name', 'web')
+                            ->whereNot('name', 'Super Admin')
+                            ->whereDoesntHave('users', function (Builder $query) {
+                                $query->where('id', $this->ownerRecord->id);
+                            });
+                    })
             ])
             ->actions([
                 Tables\Actions\DetachAction::make()
