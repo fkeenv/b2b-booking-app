@@ -67,7 +67,9 @@ class GuestResource extends Resource
                 /** @var User $user */
                 $user = auth()->user();
                 if ($user->can('viewAny', Guest::class))
-                    $query->where('accommodation_id', $user->staff->staffable_id);
+                    $query->when(!$user->isSuperAdmin(), function (Builder $query) use ($user) {
+                        $query->where('accommodation_id', $user->staff->staffable_id);
+                    });
             });
     }
 

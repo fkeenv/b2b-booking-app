@@ -17,7 +17,12 @@ class GuestFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'name' => $this->faker->name(),
+            'email' => $this->faker->unique()->safeEmail(),
+            'phone' => $this->faker->phoneNumber(),
+            'gender' => $this->faker->randomElement(['male', 'female']),
+            'date_of_birth' => $this->faker->date(),
+            'address' => $this->faker->address(),
         ];
     }
 }
