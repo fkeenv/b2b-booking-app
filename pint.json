@@ -1,0 +1,15 @@
+{
+    "preset": "laravel",
+    "rules": {
+        "ordered_imports": {
+            "sort_algorithm": "length"
+        },
+        "no_unused_imports": true,
+        "no_trailing_comma_in_singleline": {
+            "arguments": true,
+            "arrays": true,
+            "array_destructuring": true,
+            "group_imports": true
+        }
+    }
+}
