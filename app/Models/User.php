@@ -14,7 +14,10 @@ use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable implements FilamentUser, MustVerifyEmail
 {
-    /** @use HasFactory<\Database\Factories\UserFactory> */
+    /**
+     * @use HasFactory<\Database\Factories\UserFactory>
+     * @use HasSuperAdmin
+     */
     use HasFactory, Notifiable, HasRoles, HasSuperAdmin;
 
     /**
@@ -22,22 +25,14 @@ class User extends Authenticatable implements FilamentUser, MustVerifyEmail
      *
      * @var list<string>
      */
-    protected $fillable = [
-        'name',
-        'email',
-        'password',
-        'email_verified_at'
-    ];
+    protected $fillable = ["name", "email", "password", "email_verified_at"];
 
     /**
      * The attributes that should be hidden for serialization.
      *
      * @var list<string>
      */
-    protected $hidden = [
-        'password',
-        'remember_token',
-    ];
+    protected $hidden = ["password", "remember_token"];
 
     /**
      * Get the attributes that should be cast.
@@ -47,8 +42,8 @@ class User extends Authenticatable implements FilamentUser, MustVerifyEmail
     protected function casts(): array
     {
         return [
-            'email_verified_at' => 'datetime',
-            'password' => 'hashed'
+            "email_verified_at" => "datetime",
+            "password" => "hashed",
         ];
     }
 
@@ -60,8 +55,9 @@ class User extends Authenticatable implements FilamentUser, MustVerifyEmail
     public function canAccessPanel(Panel $panel): bool
     {
         return match ($panel->getId()) {
-            'admin' => $this->hasRole('Super Admin') && $this->hasVerifiedEmail(),
-          default => $this->hasVerifiedEmail(),
+            "admin" => $this->hasRole("Super Admin") &&
+                $this->hasVerifiedEmail(),
+            default => $this->hasVerifiedEmail(),
         };
     }
 }
