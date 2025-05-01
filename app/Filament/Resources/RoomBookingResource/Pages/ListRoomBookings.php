@@ -16,4 +16,11 @@ class ListRoomBookings extends ListRecords
             Actions\CreateAction::make(),
         ];
     }
+
+    protected function getHeaderWidgets(): array
+    {
+        return [
+            RoomBookingResource\Widgets\CalendarWidget::class
+        ];
+    }
 }
