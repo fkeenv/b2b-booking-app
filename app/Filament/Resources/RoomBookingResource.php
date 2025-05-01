@@ -3,6 +3,7 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\RoomBookingResource\Pages;
+use App\Filament\Resources\RoomBookingResource\Widgets\CalendarWidget;
 use App\Models\Guest;
 use App\Models\Room;
 use App\Models\RoomBooking;
@@ -28,7 +29,7 @@ class RoomBookingResource extends Resource
     public static function form(Form $form): Form
     {
         $user = Auth::user();
-        
+
         return $form->schema([
             Select::make('room_id')
                 ->label('Room')
@@ -42,13 +43,7 @@ class RoomBookingResource extends Resource
                 ->searchable(),
             Select::make('guest_id')
                 ->label('Guest')
-                ->options(function () use ($user) {
-                    return Guest::where('accommodation_id', $user->staff->staffable->id)
-                        ->get()
-                        ->mapWithKeys(function ($guest) {
-                            return [$guest->id => "{$guest->email} - {$guest->name}"];
-                        });
-                })
+                ->relationship(name: 'guest', titleAttribute: 'name')
                 ->createOptionForm([
                     Forms\Components\TextInput::make('name')
                         ->required(),
@@ -63,6 +58,8 @@ class RoomBookingResource extends Resource
                         ->required(),
                     Forms\Components\TextInput::make('address')
                         ->required(),
+                    Forms\Components\Hidden::make('accommodation_id')
+                        ->default($user->staff->staffable->id),
                 ]),
             DatePicker::make('starts_on'),
             DatePicker::make('ends_on'),
@@ -129,6 +126,13 @@ class RoomBookingResource extends Resource
             "index" => Pages\ListRoomBookings::route("/"),
             "create" => Pages\CreateRoomBooking::route("/create"),
             "edit" => Pages\EditRoomBooking::route("/{record}/edit"),
+        ];
+    }
+
+    public static function getWidgets(): array
+    {
+        return [
+            CalendarWidget::class,
         ];
     }
 }
