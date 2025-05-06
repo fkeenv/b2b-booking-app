@@ -16,50 +16,50 @@ class StaffResource extends Resource
 {
     protected static ?string $model = Staff::class;
 
-    protected static ?string $pluralLabel = 'staffs';
-    protected static ?string $slug = 'staffs';
-    protected static ?string $navigationGroup = 'User Management';
+    protected static ?string $pluralLabel = "staffs";
+    protected static ?string $slug = "staffs";
+    protected static ?string $navigationGroup = "User Management";
 
-    protected static ?string $navigationIcon = 'heroicon-o-user-group';
+    protected static ?string $navigationIcon = "heroicon-o-user-group";
 
     public static function form(Form $form): Form
     {
-        return $form
-            ->schema([
-                TextInput::make('name'),
-                TextInput::make('phone'),
-            ]);
+        return $form->schema([
+            TextInput::make("name")->required(),
+            TextInput::make("email")->required(),
+            TextInput::make("phone")->required(),
+        ]);
     }
 
     public static function table(Table $table): Table
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('staffable.name')
-                    ->label('Organization')
+                Tables\Columns\TextColumn::make("staffable.name")
+                    ->label("Organization")
                     ->searchable(),
-                Tables\Columns\TextColumn::make('name')
+                Tables\Columns\TextColumn::make("name")->searchable(),
+                Tables\Columns\TextColumn::make("user.email")
+                    ->label("Email")
                     ->searchable(),
-                Tables\Columns\TextColumn::make('user.email')
-                    ->label('Email')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('phone')
+                Tables\Columns\TextColumn::make("phone"),
             ])
             ->filters([
                 //
             ])
-            ->actions([
-                Tables\Actions\EditAction::make(),
-            ])
+            ->actions([Tables\Actions\EditAction::make()])
             ->bulkActions([
                 //
             ])
             ->modifyQueryUsing(function (Builder $query) {
                 /** @var User $user */
                 $user = auth()->user();
-                $user->can('viewAny', Staff::class)
-                    ? $query->where('staffable_id', $user->id)
-                    : $query->where('staffable_id', $user->staff->staffable_id);
+                $user->isSuperAdmin() && $user->can("viewAny", Staff::class)
+                    ? $query->where("staffable_id", $user->id)
+                    : $query
+                        ->where("user_id", "!=", $user->id)
+                        ->where("staffable_type", $user->staff->staffable_type)
+                        ->where("staffable_id", $user->staff->staffable_id);
             });
     }
 
@@ -73,13 +73,9 @@ class StaffResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListStaff::route('/'),
-            'edit' => Pages\EditStaff::route('/{record}/edit'),
+            "index" => Pages\ListStaff::route("/"),
+            "create" => Pages\CreateStaff::route("/create"),
+            "edit" => Pages\EditStaff::route("/{record}/edit"),
         ];
-    }
-
-    public static function canCreate(): bool
-    {
-        return false;
     }
 }
