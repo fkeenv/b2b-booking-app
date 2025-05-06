@@ -3,6 +3,7 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\StaffResource\Pages;
+use App\Filament\Resources\StaffResource\RelationManagers;
 use App\Models\Staff;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
@@ -66,7 +67,7 @@ class StaffResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            RelationManagers\VehiclesRelationManager::class
         ];
     }
 
