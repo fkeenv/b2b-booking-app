@@ -5,6 +5,8 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 
 class Staff extends Model
@@ -23,5 +25,11 @@ class Staff extends Model
     public function staffable(): MorphTo
     {
         return $this->morphTo();
+    }
+    
+    public function vehicles(): BelongsToMany
+    {
+        return $this->belongsToMany(Vehicle::class, 'staff_vehicle')
+            ->withPivot('staff_id', 'vehicle_id', 'starts_at', 'ends_at', 'created_at');
     }
 }
