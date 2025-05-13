@@ -77,11 +77,15 @@ Follow these steps to set up the project locally:
    ```bash
    php artisan migrate
    ```
-
-7. **Create an Admin User**
    ```bash
-   php artisan make:filament-user
+   php artisan permissions:sync -P
    ```
+   ```bash
+   php artisan db:seed
+   ```
+
+7. **A Super Admin account will be created during the seeding process**
+   1. Check the email and password in the SuperAdminSeeder.php
 
 8. **Access the Admin Panel**  
    Visit your site at:  
