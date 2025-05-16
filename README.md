@@ -75,14 +75,9 @@ Follow these steps to set up the project locally:
 
 6. **Run Database Migrations**
    ```bash
-   php artisan migrate
+   sh ./scripts/fresh.sh
    ```
-   ```bash
-   php artisan permissions:sync -P
-   ```
-   ```bash
-   php artisan db:seed
-   ```
+   The command above will run migration:fresh, add in the permissions and run the db:seeders
 
 7. **A Super Admin account will be created during the seeding process**
    1. Check the email and password in the SuperAdminSeeder.php
