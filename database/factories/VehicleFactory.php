@@ -17,7 +17,11 @@ class VehicleFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'make' => $this->faker->word(),
+            'model' => $this->faker->word(),
+            'year' => $this->faker->year(),
+            'color' => $this->faker->colorName(),
+            'license_plate' => $this->faker->randomNumber(),
         ];
     }
 }
