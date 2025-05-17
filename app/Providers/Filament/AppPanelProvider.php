@@ -28,6 +28,7 @@ class AppPanelProvider extends PanelProvider
             ->path('app')
             ->login()
             ->databaseTransactions()
+            ->profile(isSimple: false)
             ->colors([
                 'primary' => Color::Amber,
             ])
