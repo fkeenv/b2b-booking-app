@@ -88,6 +88,12 @@ Follow these steps to set up the project locally:
 
 ---
 
+## Native
+
+1. Checkout installation docs for our [Native README.md](/ui/native/README.md) development.
+
+---
+
 Let me know if you want me to add optional steps like seeding the database or running tests!
 
 ## 🤝 Contributing
