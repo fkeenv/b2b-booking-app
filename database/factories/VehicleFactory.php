@@ -2,26 +2,37 @@
 
 namespace Database\Factories;
 
+use App\Models\Transportation;
+use App\Models\Vehicle;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
-/**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Vehicle>
- */
 class VehicleFactory extends Factory
 {
-    /**
-     * Define the model's default state.
-     *
-     * @return array<string, mixed>
-     */
+    protected $model = Vehicle::class;
+
     public function definition(): array
     {
+        $vehicleMakes = [
+            'Toyota',
+            'Ford',
+            'Mercedes',
+            'Volvo',
+            'Honda',
+            'BMW',
+            'Tesla'
+        ];
+
+        $currentYear = now()->year;
+
         return [
-            'make' => $this->faker->word(),
-            'model' => $this->faker->word(),
-            'year' => $this->faker->year(),
-            'color' => $this->faker->colorName(),
-            'license_plate' => $this->faker->randomNumber(),
+            'transportation_id' => function () {
+                return Transportation::inRandomOrder()->first()?->id ?? Transportation::factory();
+            }, 
+            'make' => $this->faker->randomElement($vehicleMakes),
+            'model' => $this->faker->bothify('Model-###'),
+            'year' => (string) $this->faker->numberBetween(2015, $currentYear),
+            'color' => $this->faker->safeColorName(),
+            'license_plate' => strtoupper($this->faker->bothify('???-####')),
         ];
     }
 }
