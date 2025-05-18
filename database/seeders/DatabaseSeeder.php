@@ -21,6 +21,7 @@ class DatabaseSeeder extends Seeder
             AccommodationSeeder::class,
             TransportationOwnerPermissionSeeder::class,
             AccommodationOwnerPermissionSeeder::class,
+            StaffSeeder::class,
         ]);
     }
 }
