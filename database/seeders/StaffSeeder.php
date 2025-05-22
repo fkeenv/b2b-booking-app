@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Seeder;
 use App\Models\User;
 use App\Models\Staff;
@@ -27,13 +28,7 @@ class StaffSeeder extends Seeder
      */
     public function run(): void
     {
-        $users = User::count()
-            ? User::limit(10)->get()
-            : collect([User::create([
-                'name' => 'Default Staff User',
-                'email' => 'default.staff.user@b2bbookingapp.com',
-                'password' => bcrypt('password'),
-            ])]);
+        $users = User::factory()->count(10)->create();
 
         foreach ($users as $user) {
             if ($user->id % 2 === 0) {
@@ -56,35 +51,30 @@ class StaffSeeder extends Seeder
      */
     private function seedModel(string $modelClass, string $contactField, User $user): void
     {
-        $modelClass::all()->each(function ($entity) use ($modelClass, $contactField, $user) {
-            $email = $this->generateEmail($modelClass, $entity->id, $user->id);
+        $model = (new $modelClass)::first();
 
-            Staff::firstOrCreate(
-                [
-                    'user_id' => $user->id,
-                    'staffable_id' => $entity->id,
-                    'staffable_type' => $modelClass,
-                    'email' => $email,
-                ],
-                [
-                    'name' => "{$entity->name} Staff",
-                    'phone' => $entity->{$contactField},
-                ]
-            );
-        });
+        $email = $this->generateEmail($model, $user->name);
+
+        Staff::create([
+            'user_id' => $user->id,
+            'staffable_id' => $model->id,
+            'staffable_type' => $modelClass,
+            'email' => $email,
+            'name' => "{$model->name} Staff",
+            'phone' => $model->{$contactField},
+        ]);
     }
 
     /**
      * Generates a unique staff email based on the model type, entity ID, and user ID.
      *
-     * @param  string  $modelClass Fully qualified model class name
-     * @param  int     $entityId   ID of the Transportation or Accommodation entity
-     * @param  int     $userId     ID of the User
-     * @return string              Generated unique email
+     * @param Model $model
+     * @param string $name name property of user
+     * @return string Generated unique email
      */
-    private function generateEmail(string $modelClass, int $entityId, int $userId): string
+    private function generateEmail(Model $model, string $name): string
     {
-        $type = strtolower(class_basename($modelClass));
-        return "staff_{$type}_{$entityId}_user{$userId}@b2bbookingapp.com";
+        $name = str_replace(' ', '', strtolower($name));
+        return "{$name}@example.test"; // TO DO: this must be replaced with the org's domain
     }
 }

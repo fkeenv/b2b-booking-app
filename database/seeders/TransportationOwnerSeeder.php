@@ -15,17 +15,12 @@ class TransportationOwnerSeeder extends Seeder
      */
     public function run(): void
     {
-        $user = User::create([
-            'name' => 'John Doe',
-            'email' => 'john.doe@mailinator.com',
-            'password' => bcrypt('password'),
-            'created_at' => now(),
-        ]);
+        $user = User::factory()->create();
 
         $transportation = Transportation::create([
             'name' => 'Transportation Co.',
             'email' => 'transportation.co@mailinator.com',
-            'phone' => '+639151630468',
+            'phone' => '+639141234567',
             'website' => 'www.transportation.test',
             'created_at' => now()
         ]);
@@ -36,7 +31,7 @@ class TransportationOwnerSeeder extends Seeder
             'staffable_type' => Transportation::class,
             'name' => $user->name,
             'email' => $user->email,
-            'phone' => '+63322551385',
+            'phone' => '+639141234567',
             'created_at' => now(),
         ]);
 
