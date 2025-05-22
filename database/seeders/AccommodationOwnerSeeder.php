@@ -4,29 +4,23 @@ namespace Database\Seeders;
 
 use App\Models\Accommodation;
 use App\Models\Staff;
-use App\Models\Transportation;
 use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
-class AccommodationSeeder extends Seeder
+class AccommodationOwnerSeeder extends Seeder
 {
     /**
      * Run the database seeds.
      */
     public function run(): void
     {
-        $user = User::create([
-            'name' => 'Jerry Doe',
-            'email' => 'jerry.doe@mailinator.com',
-            'password' => bcrypt('password'),
-            'created_at' => now(),
-        ]);
+        $user = User::factory()->create();
 
         $accommodation = Accommodation::create([
             'name' => 'Accommodation Co.',
             'email' => 'accommodation.co@mailinator.com',
-            'contact' => '+639151630468',
+            'contact' => '+639123456789',
             'website' => 'www.accommodation.test',
             'created_at' => now()
         ]);
@@ -37,7 +31,7 @@ class AccommodationSeeder extends Seeder
             'staffable_type' => Accommodation::class,
             'name' => $user->name,
             'email' => $user->email,
-            'phone' => $accommodation->contact,
+            'phone' => '+639123456789',
             'created_at' => now(),
         ]);
 
